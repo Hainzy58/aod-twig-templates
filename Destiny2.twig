@@ -6,64 +6,83 @@
 
 [SIZE=5][COLOR="{{ leader_color }}"][B][U]Division Leadership[/U][/B][/COLOR][/SIZE]
 [SIZE=4]
-{% for leader in division.leaders %}
-    [profile={{ leader.clan_id }}][color={{ leader.rank.color }}]{{ leader.present().rankName }}[/color][/profile] - {{ leader.position.name }}
-{% endfor %}
+	{% for leader in division.leaders %}
+		[profile={{ leader.clan_id }}][color={{ leader.rank.color }}]{{ leader.present().rankName }}[/color][/profile] - {{ leader.position.name }}
+	{% endfor %}
 [/size]
 
 
+{# action buttons #}
+{# Join ----------------------------------- Request LOA ----------------------------------------------------------------------------------------------- Accept Promo ---------------------------- #}
+[url=https://www.clanaod.net/forums/showthread.php?t=171707&p=1460252&viewfull=1#post1460252][img]https://i.imgur.com/xsdjPLg.png[/img][/url] [url=https://www.clanaod.net/forums/showthread.php?t=171696][img]https://i.imgur.com/GkEsZJ5.png[/img][/url] [url=https://www.clanaod.net/forums/showthread.php?t=171701][img]https://i.imgur.com/PResFBh.png[/img][/url]
+
+
 [size=3][color="#fff"]General Sergeants[/color]
-{% for sergeant in division.generalSergeants %}
-    [profile={{ sergeant.clan_id }}][color={{ sergeant.rank.color }}]{{ sergeant.present().rankName }}[/color][/profile]
-{% else %}
-    No general Sergeants assigned
-{% endfor %}
-[/SIZE]
+	{% for sergeant in division.generalSergeants %}
+		[profile={{ sergeant.clan_id }}][color={{ sergeant.rank.color }}]{{ sergeant.present().rankName }}[/color][/profile]
+	{% else %}
+		No general Sergeants assigned
+	{% endfor %}
+
+[/size]
 [/center]
 
-{% for platoon in division.platoons %}
-    [table="align: center"]
-    [tr][td]
 
-    [center]
+[table="align: center"]
+	[tr]
+{% for platoon in division.platoons %}	
+[td]
+[table="align: center"]
+	[tr][td]
+	
+	[center]
     [img]{{ platoon.logo }}[/img]
-
-
+    
+    
     [size=4][color={{ platoon_color }}]{{ platoon.name }}[/color]
+    
 
-
-    {% if platoon.leader %}
-        [profile={{ platoon.leader.clan_id }}][color="#00FF00"]{{ platoon.leader.present().rankName }}[/color][/profile]
-    {% else %}
-        TBA
-    {% endif %}
+	{% if platoon.leader %}
+    	[profile={{ platoon.leader.clan_id }}][color="#00FF00"]{{ platoon.leader.present().rankName }}[/color][/profile]
+	{% else %}
+    	TBA
+   	{% endif %}
     [/center]
-    [/size]
-    [/td][/tr]
-    [/table]
-    [table="align: center"]
-    [tr]
-    {% for squad in platoon.squads %}
-        [td]
-        [size=3]
-        [center][color={{ platoon_color }}]{{ squad.name ?: "Squad " + loop.index }}[/color]
-        {% if squad.leader %}
-            [profile={{ squad.leader.clan_id }}][color=white]{{ squad.leader.present().rankName }}[/color][/profile]
-        {% else %}
-            TBA
-        {% endif %}
-        [/center][/size]
-        [size=2][list=1]
-        {%- for member in squad.members -%}
-            [*][profile={{ member.clan_id }}]{{ member.present().rankName }}[/profile]
-        {% endfor %}
-        [/list][/size]
-        [/td]
-        {% if loop.index is divisible by (2) %}
-            [/tr][tr]
-        {% endif %}
-    {% endfor %}
-    [/tr]
+    	[/size]    
+	[/td][/tr]
+[/table]
 
-    [/table]
+[table="align: center"]
+[tr]
+    {% for squad in platoon.squads %}
+    [td]
+    	[size=3]
+    	[center][color={{ platoon_color }}]{{ squad.name ?: "Fireteam " ~ loop.index }}[/color]
+    	{% if squad.leader %}
+			[profile={{ squad.leader.clan_id }}][color=white]{{ squad.leader.present().rankName }}[/color][/profile]
+		{% else %} 
+			TBA 
+		{% endif %} 
+        [/center][/size] 
+        [size=2][list=1] 
+ 		{%- for member in squad.members -%} 
+ 			[*][profile={{ member.clan_id }}]{{ member.present().rankName }}[/profile]
+ 		{% endfor %} 
+ 		[/list][/size] 
+	[/td]
+	{% if loop.index is divisible by (2) %}
+	[/tr][tr]
+	{% endif %}
+	{% endfor %} 
+	[/tr]
+	
+	[/table]
+[/td]
+
+{% if loop.index is divisible by (2) %}
+[/tr][tr]
+{% endif %}
+
 {% endfor %}
+[/tr]
+[/table]
